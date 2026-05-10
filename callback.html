@@ -1,35 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>TikTok Authorization</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Authorization - Yog Philosophy</title>
   <style>
-    body { font-family: Arial; text-align: center; padding: 50px; }
-    .success { color: green; }
-    .code { background: #f4f4f4; padding: 10px; margin: 20px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0d0d0d;
+      color: #f0ece2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 560px;
+      width: 100%;
+      padding: 40px 30px;
+      background: #1a1030;
+      border-radius: 16px;
+      border: 1px solid #3b1f6e;
+      text-align: center;
+    }
+    .logo { font-size: 2.5em; margin-bottom: 10px; }
+    .app-name { color: #f5c842; font-size: 1.5em; font-weight: 700; margin-bottom: 30px; }
+    .status-icon { font-size: 4em; margin-bottom: 16px; }
+    h1 { color: #4caf50; font-size: 1.6em; margin-bottom: 10px; }
+    h1.error { color: #f44336; }
+    .subtitle { color: #cbbfef; margin-bottom: 30px; }
+    .user-card {
+      background: #0d0d0d;
+      border: 1px solid #3b1f6e;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-align: left;
+    }
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #3b1f6e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .user-info h3 { color: #f5c842; font-size: 1.2em; margin-bottom: 4px; }
+    .user-info p { color: #8877bb; font-size: 0.9em; }
+    .scopes-granted {
+      background: #0d0d0d;
+      border: 1px solid #2a3b2a;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      text-align: left;
+    }
+    .scopes-granted h4 { color: #4caf50; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .scope-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      color: #cbbfef;
+      font-size: 0.9em;
+    }
+    .scope-item::before { content: '\2713'; color: #4caf50; font-weight: bold; }
+    .auth-code-box {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: monospace;
+      font-size: 0.8em;
+      color: #8877bb;
+      word-break: break-all;
+      margin: 16px 0;
+      text-align: left;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 34px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1em;
+      text-decoration: none;
+      cursor: pointer;
+      background: #f5c842;
+      color: #1a0a2e;
+      border: none;
+      margin-top: 10px;
+    }
+    .btn:hover { background: #ffd966; }
   </style>
 </head>
 <body>
-  <h1 class="success">✓ Authorization Successful</h1>
-  <p>You have successfully authorized the app with TikTok.</p>
-  <div class="code" id="authCode"></div>
-  
+  <div class="container">
+    <div class="logo">&#x1F9D8;</div>
+    <div class="app-name">Yog Philosophy</div>
+
+    <div id="success-view" style="display:none">
+      <div class="status-icon">&#x2705;</div>
+      <h1>Authorization Successful!</h1>
+      <p class="subtitle">You have successfully connected your TikTok account to Yog Philosophy.</p>
+
+      <div class="user-card" id="user-card">
+        <div class="avatar" id="user-avatar">&#x1F464;</div>
+        <div class="user-info">
+          <h3 id="user-name">TikTok User</h3>
+          <p id="user-handle">@tiktok_user</p>
+        </div>
+      </div>
+
+      <div class="scopes-granted">
+        <h4>&#x1F510; Permissions Granted</h4>
+        <div class="scope-item">user.info.basic &mdash; Profile name &amp; avatar</div>
+        <div class="scope-item">video.upload &mdash; Upload videos to TikTok</div>
+        <div class="scope-item">video.publish &mdash; Publish videos to your profile</div>
+      </div>
+
+      <div class="auth-code-box" id="auth-code-display"></div>
+
+      <a href="./" class="btn">&#x2190; Return to Yog Philosophy</a>
+    </div>
+
+    <div id="error-view" style="display:none">
+      <div class="status-icon">&#x274C;</div>
+      <h1 class="error">Authorization Failed</h1>
+      <p class="subtitle" id="error-msg">No authorization code was received.</p>
+      <a href="./" class="btn">&#x2190; Try Again</a>
+    </div>
+
+    <div id="loading-view">
+      <div class="status-icon">&#x23F3;</div>
+      <h1 style="color:#f5c842">Processing...</h1>
+      <p class="subtitle">Completing your TikTok authorization.</p>
+    </div>
+  </div>
+
   <script>
-    // Extract authorization code from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
-    
-    if (code) {
-      document.getElementById('authCode').innerHTML = 
-        '<strong>Authorization Code:</strong><br>' + code;
-      
-      // In production, send this code to your n8n webhook
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const state = params.get('state');
+      const error = params.get('error');
+
+      document.getElementById('loading-view').style.display = 'none';
+
+      if (error || !code) {
+        document.getElementById('error-view').style.display = 'block';
+        if (error) {
+          document.getElementById('error-msg').textContent = 'TikTok returned an error: ' + error;
+        }
+        return;
+      }
+
+      // Show success view
+      document.getElementById('success-view').style.display = 'block';
+
+      // Show the auth code (truncated for display)
+      document.getElementById('auth-code-display').innerHTML =
+        '<strong style="color:#f5c842">Authorization Code Received:</strong><br>' +
+        code.substring(0, 40) + '...';
+
+      // In a real app, you would exchange this code server-side for an access token
+      // and then call the TikTok user.info.basic API to get profile details.
+      // For this demo, we display the sandbox user info.
+      const savedName = sessionStorage.getItem('tiktok_display_name');
+      if (savedName) {
+        document.getElementById('user-name').textContent = savedName;
+        document.getElementById('user-handle').textContent = '@' + savedName.toLowerCase().replace(/\s+/g, '_');
+      }
+
       console.log('Authorization code:', code);
       console.log('State:', state);
-    } else {
-      document.getElementById('authCode').innerHTML = 
-        '<span style="color:red;">No authorization code received</span>';
-    }
+    })();
   </script>
 </body>
 </html>
