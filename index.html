@@ -138,7 +138,7 @@
   // Read client key from URL param for demo purposes (e.g. ?ck=YOUR_KEY)
   // This allows the developer to pass the key via URL without hardcoding it
   const urlParams = new URLSearchParams(window.location.search);
-  const TIKTOK_CLIENT_KEY = urlParams.get('ck') || 'sbawnk080qecduhctr';
+  const TIKTOK_CLIENT_KEY = urlParams.get('ck') || 'YOUR_CLIENT_KEY';
   const REDIRECT_URI = 'https://nishant4121988.github.io/yog-philosophy/callback.html';
   const SCOPES = 'user.info.basic,video.upload,video.publish';
 
@@ -147,7 +147,7 @@
   }
 
   function startTikTokLogin() {
-    if (TIKTOK_CLIENT_KEY === 'sbawnk080qecduhctr') {
+    if (TIKTOK_CLIENT_KEY === 'YOUR_CLIENT_KEY') {
       alert('TikTok Login Kit Demo\n\nTo activate the OAuth flow, open this page with:\n?ck=YOUR_SANDBOX_CLIENT_KEY\n\nOr contact the app developer to connect via TikTok.');
       return;
     }
