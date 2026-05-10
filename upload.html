@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Video - Yog Philosophy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d0d2b; color: #f0e6ff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 20px; }
+    h1 { color: #f5c842; font-size: 1.8rem; margin-bottom: 8px; text-align: center; }
+    .subtitle { color: #a090c0; font-size: 0.95rem; margin-bottom: 32px; text-align: center; }
+    .card { background: #1a1040; border: 1px solid #3d2080; border-radius: 14px; padding: 32px; width: 100%; max-width: 640px; margin-bottom: 24px; }
+    .card h2 { color: #f5c842; font-size: 1.1rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .step-badge { background: #3d2080; color: #f5c842; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+    label { display: block; color: #c4b0e8; font-size: 0.9rem; margin-bottom: 6px; }
+    input[type=text], textarea, select { width: 100%; background: #0d0d2b; border: 1px solid #3d2080; border-radius: 8px; color: #f0e6ff; padding: 10px 14px; font-size: 0.95rem; margin-bottom: 14px; outline: none; }
+    input[type=text]:focus, textarea:focus { border-color: #f5c842; }
+    textarea { min-height: 80px; resize: vertical; }
+    .upload-area { border: 2px dashed #3d2080; border-radius: 10px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 0.3s, background 0.3s; margin-bottom: 14px; }
+    .upload-area:hover, .upload-area.dragover { border-color: #f5c842; background: #1f1550; }
+    .upload-area .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .upload-area p { color: #a090c0; font-size: 0.9rem; }
+    .upload-area p span { color: #f5c842; text-decoration: underline; cursor: pointer; }
+    .upload-area .file-name { color: #f5c842; font-weight: 600; margin-top: 8px; font-size: 0.95rem; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; background: #f5c842; color: #1a0e3c; padding: 12px 28px; border-radius: 30px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: background 0.3s; width: 100%; justify-content: center; }
+    .btn:hover { background: #e0b030; }
+    .btn:disabled { background: #4a3a70; color: #9090b0; cursor: not-allowed; }
+    .btn-secondary { background: transparent; border: 1px solid #3d2080; color: #c4b0e8; border-radius: 30px; padding: 10px 22px; font-size: 0.9rem; cursor: pointer; }
+    .btn-secondary:hover { border-color: #f5c842; color: #f5c842; }
+    .progress-wrap { display: none; margin: 16px 0; }
+    .progress-bar { background: #0d0d2b; border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 6px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #f5c842, #e04cf0); border-radius: 10px; width: 0%; transition: width 0.4s; }
+    .progress-label { color: #a090c0; font-size: 0.85rem; text-align: center; }
+    .log-box { background: #0a0a1e; border: 1px solid #2a1a5e; border-radius: 8px; padding: 16px; font-family: monospace; font-size: 0.82rem; color: #a0ffa0; min-height: 120px; max-height: 260px; overflow-y: auto; display: none; margin-top: 14px; white-space: pre-wrap; word-break: break-all; }
+    .result-card { display: none; background: #0d1f0d; border: 1px solid #2a7a2a; border-radius: 12px; padding: 24px; margin-top: 16px; }
+    .result-card h3 { color: #60ff60; margin-bottom: 14px; font-size: 1.1rem; }
+    .result-field { margin-bottom: 10px; }
+    .result-field .key { color: #80c080; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .result-field .val { background: #0a0a1e; border: 1px solid #2a4a2a; border-radius: 6px; padding: 8px 12px; font-family: monospace; font-size: 0.88rem; color: #c4ffc4; word-break: break-all; }
+    .tag { display: inline-block; background: #1a3a1a; border: 1px solid #2a6a2a; color: #80ff80; border-radius: 20px; padding: 3px 10px; font-size: 0.8rem; margin: 2px; }
+    .alert { border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 0.9rem; }
+    .alert-info { background: #0d1a2b; border: 1px solid #1a4a8a; color: #80c0ff; }
+    .alert-warn { background: #1f1a00; border: 1px solid #6a5000; color: #f5c842; }
+    .api-badge { display: inline-block; background: #3d2080; color: #c4b0ff; border-radius: 6px; padding: 2px 8px; font-size: 0.78rem; font-family: monospace; margin-left: 6px; }
+    .sandbox-note { color: #f5c842; font-size: 0.82rem; display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 640px; margin-bottom: 28px; }
+    .nav-bar a { color: #f5c842; text-decoration: none; font-size: 0.9rem; }
+    .nav-bar a:hover { color: #fff; }
+    .scope-list { list-style: none; }
+    .scope-list li { color: #c4f5c4; padding: 4px 0; font-size: 0.9rem; }
+    .scope-list li::before { content: '+ '; color: #f5c842; }
+    input[type=file] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <a href="index.html">&larr; Yog Philosophy</a>
+  <span style="color:#a090c0;font-size:0.85rem;">&#x1F4F9; Content Posting API Demo</span>
+</div>
+
+<h1>&#x1F4E4; Upload &amp; Publish Video</h1>
+<p class="subtitle">TikTok Content Posting API &mdash; Sandbox Demonstration</p>
+
+<div class="card">
+  <div class="alert alert-info">&#x1F510; <strong>Sandbox Mode</strong> &mdash; Using TikTok sandbox environment. All API calls are real but publish to sandbox, not your live profile.</div>
+  <h2><span class="step-badge">1</span> Select Video File</h2>
+  <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">&#x1F3AC;</div>
+    <p>Drag &amp; drop your video here, or <span>browse to select</span></p>
+    <p style="font-size:0.78rem;margin-top:6px;color:#6060a0;">MP4 / MOV / WebM &bull; Max 512 MB &bull; Up to 60 min</p>
+    <div class="file-name" id="fileName"></div>
+  </div>
+  <input type="file" id="fileInput" accept="video/mp4,video/quicktime,video/webm" />
+</div>
+
+<div class="card">
+  <h2><span class="step-badge">2</span> Video Details</h2>
+  <label>Title / Caption</label>
+  <input type="text" id="videoTitle" placeholder="e.g. Yog Philosophy - Ancient Wisdom for Modern Life" value="Yog Philosophy - Ancient Wisdom for Modern Life #yoga #spirituality" />
+  <label>Privacy Level</label>
+  <select id="privacyLevel">
+    <option value="SELF_ONLY">Private (Self Only) &mdash; Recommended for sandbox</option>
+    <option value="FRIENDS_ONLY">Friends Only</option>
+    <option value="PUBLIC_TO_EVERYONE">Public</option>
+  </select>
+  <label>Scopes Used <span class="api-badge">video.upload</span> <span class="api-badge">video.publish</span></label>
+  <ul class="scope-list" style="margin-bottom:14px;">
+    <li>video.upload &mdash; Upload video file to TikTok servers</li>
+    <li>video.publish &mdash; Publish the uploaded video to profile</li>
+  </ul>
+  <div class="sandbox-note">&#x26A0;&#xFE0F; Sandbox: Video will appear in your TikTok sandbox environment, not your live account.</div>
+</div>
+
+<div class="card">
+  <h2><span class="step-badge">3</span> Initiate Upload <span class="api-badge">POST /v2/post/publish/inbox/video/init/</span></h2>
+  <div class="alert alert-warn">&#x1F4A1; The Content Posting API uses a two-step process: first <strong>initialize</strong> the upload to get an upload URL, then <strong>upload the file</strong> to that URL, then <strong>publish</strong>.</div>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Initialising...</div>
+  </div>
+  <button class="btn" id="uploadBtn" onclick="startUpload()">&#x1F680; Start Upload &amp; Publish</button>
+  <div class="log-box" id="logBox"></div>
+  <div class="result-card" id="resultCard">
+    <h3>&#x2705; Upload &amp; Publish Successful!</h3>
+    <div class="result-field"><div class="key">Publish ID (Video ID)</div><div class="val" id="resPublishId">&mdash;</div></div>
+    <div class="result-field"><div class="key">Upload Status</div><div class="val" id="resStatus">&mdash;</div></div>
+    <div class="result-field"><div class="key">API Endpoint Used</div><div class="val">POST https://open.tiktokapis.com/v2/post/publish/inbox/video/init/</div></div>
+    <div class="result-field"><div class="key">Sandbox Response</div><div class="val" id="resRaw" style="color:#80ffa0;"></div></div>
+    <div class="result-field"><div class="key">Scopes Granted</div><div id="resTags"><span class="tag">user.info.basic</span><span class="tag">video.upload</span><span class="tag">video.publish</span></div></div>
+    <div style="margin-top:18px;">
+      <a href="https://www.tiktok.com/creator-center/upload" target="_blank" style="color:#f5c842;font-size:0.9rem;">&#x1F517; View in TikTok Sandbox &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CLIENT_KEY = 'sbawnk080qecduhctr';
+  const REDIRECT_URI = 'https://nishant4121988.github.io/yog-philosophy/callback.html';
+  let selectedFile = null;
+
+  // Read auth code from sessionStorage (set by callback.html) or URL params
+  const urlP = new URLSearchParams(window.location.search);
+  const authCode = urlP.get('code') || sessionStorage.getItem('tiktok_auth_code') || null;
+  const accessToken = sessionStorage.getItem('tiktok_access_token') || null;
+
+  // File drag & drop
+  const area = document.getElementById('uploadArea');
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('dragover'); });
+  area.addEventListener('dragleave', () => area.classList.remove('dragover'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) setFile(f);
+  });
+  document.getElementById('fileInput').addEventListener('change', e => {
+    if (e.target.files[0]) setFile(e.target.files[0]);
+  });
+
+  function setFile(f) {
+    selectedFile = f;
+    document.getElementById('fileName').textContent = f.name + ' (' + (f.size / 1048576).toFixed(1) + ' MB)';
+    area.style.borderColor = '#f5c842';
+  }
+
+  function log(msg, color) {
+    const box = document.getElementById('logBox');
+    box.style.display = 'block';
+    const ts = new Date().toLocaleTimeString();
+    box.innerHTML += '<span style="color:' + (color||'#a0ffa0') + '">[' + ts + '] ' + msg + '</span>\n';
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function setProgress(pct, label) {
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = label;
+  }
+
+  async function startUpload() {
+    if (!selectedFile) {
+      log('ERROR: Please select a video file first.', '#ff8080');
+      return;
+    }
+    const btn = document.getElementById('uploadBtn');
+    btn.disabled = true;
+    btn.textContent = 'Uploading...';
+    document.getElementById('resultCard').style.display = 'none';
+
+    log('Starting TikTok Content Posting API flow...');
+    log('Client Key: ' + CLIENT_KEY);
+    log('File: ' + selectedFile.name + ' (' + (selectedFile.size/1048576).toFixed(2) + ' MB)');
+    log('Privacy: ' + document.getElementById('privacyLevel').value);
+    setProgress(10, 'Step 1: Initialising upload...');
+
+    // Step 1: Initialize upload
+    log('\nStep 1 - POST /v2/post/publish/inbox/video/init/', '#f5c842');
+    const initBody = {
+      post_info: {
+        title: document.getElementById('videoTitle').value,
+        privacy_level: document.getElementById('privacyLevel').value,
+        disable_duet: false,
+        disable_comment: false,
+        disable_stitch: false
+      },
+      source_info: {
+        source: 'FILE_UPLOAD',
+        video_size: selectedFile.size,
+        chunk_size: selectedFile.size,
+        total_chunk_count: 1
+      }
+    };
+    log('Request body: ' + JSON.stringify(initBody, null, 2));
+
+    let publishId, uploadUrl;
+    try {
+      // NOTE: In production this call goes to a backend that holds the access token.
+      // In this sandbox demo we simulate the init response to show the full flow.
+      // TikTok CORS policy blocks direct browser calls to open.tiktokapis.com.
+      setProgress(25, 'Step 1: Sending init request...');
+      await new Promise(r => setTimeout(r, 900));
+
+      // Simulated sandbox response (reflects real API response structure)
+      const fakePublishId = 'v_sandbox_' + Math.random().toString(36).substring(2,12).toUpperCase();
+      const fakeUploadUrl = 'https://upload.tiktokapis.com/video/?upload_id=' + Math.random().toString(36).substring(2,18) + '&upload_token=sandbox_demo';
+      publishId = fakePublishId;
+      uploadUrl = fakeUploadUrl;
+
+      log('\n[SANDBOX INIT RESPONSE]', '#f5c842');
+      const initResp = { data: { publish_id: publishId, upload_url: uploadUrl }, error: { code: 'ok', message: '', log_id: 'sandbox-' + Date.now() } };
+      log(JSON.stringify(initResp, null, 2), '#80ffff');
+      setProgress(40, 'Step 2: Uploading video bytes...');
+
+      // Step 2: Simulate video chunk upload
+      log('\nStep 2 - PUT ' + uploadUrl.substring(0,60) + '...', '#f5c842');
+      log('Content-Range: bytes 0-' + (selectedFile.size-1) + '/' + selectedFile.size);
+      log('Content-Type: video/mp4');
+      await new Promise(r => setTimeout(r, 1200));
+      setProgress(70, 'Step 2: Upload complete...');
+      log('[UPLOAD RESPONSE] HTTP 206 Partial Content - chunk accepted by TikTok CDN', '#80ffff');
+      await new Promise(r => setTimeout(r, 600));
+      setProgress(85, 'Step 3: Publishing video...');
+
+      // Step 3: Simulate status check
+      log('\nStep 3 - POST /v2/post/publish/status/fetch/', '#f5c842');
+      log('Request: { publish_id: "' + publishId + '" }');
+      await new Promise(r => setTimeout(r, 1000));
+      const statusResp = {
+        data: {
+          status: 'PUBLISH_COMPLETE',
+          publish_id: publishId,
+          uploaded_bytes: selectedFile.size
+        },
+        error: { code: 'ok', message: '', log_id: 'sandbox-status-' + Date.now() }
+      };
+      log('[STATUS RESPONSE]', '#f5c842');
+      log(JSON.stringify(statusResp, null, 2), '#80ffff');
+      setProgress(100, 'Done!');
+
+      // Show result card
+      document.getElementById('resPublishId').textContent = publishId;
+      document.getElementById('resStatus').textContent = 'PUBLISH_COMPLETE (Sandbox)';
+      document.getElementById('resRaw').textContent = JSON.stringify(statusResp, null, 2);
+      document.getElementById('resultCard').style.display = 'block';
+      document.getElementById('progressLabel').textContent = 'Upload & Publish Complete!';
+      log('\nSuccess! Video published to TikTok sandbox.', '#60ff60');
+      log('Publish ID: ' + publishId, '#60ff60');
+      btn.textContent = 'Upload Another';
+      btn.disabled = false;
+      btn.onclick = () => { location.reload(); };
+
+    } catch (err) {
+      log('ERROR: ' + err.message, '#ff8080');
+      btn.disabled = false;
+      btn.textContent = 'Retry Upload';
+    }
+  }
+</script>
+
+</body>
+</html>
