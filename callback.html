@@ -9,97 +9,80 @@
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       background: #0d0d0d;
-      color: #f0ece2;
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .container {
-      max-width: 560px;
-      width: 100%;
+      max-width: 600px;
+      width: 90%;
       padding: 40px 30px;
-      background: #1a1030;
+      background: #1a1a2e;
       border-radius: 16px;
-      border: 1px solid #3b1f6e;
+      border: 1px solid #333;
       text-align: center;
     }
-    .logo { font-size: 2.5em; margin-bottom: 10px; }
-    .app-name { color: #f5c842; font-size: 1.5em; font-weight: 700; margin-bottom: 30px; }
-    .status-icon { font-size: 4em; margin-bottom: 16px; }
-    h1 { color: #4caf50; font-size: 1.6em; margin-bottom: 10px; }
-    h1.error { color: #f44336; }
-    .subtitle { color: #cbbfef; margin-bottom: 30px; }
-    .user-card {
-      background: #0d0d0d;
-      border: 1px solid #3b1f6e;
-      border-radius: 12px;
-      padding: 24px;
-      margin: 20px 0;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      text-align: left;
-    }
-    .avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: #3b1f6e;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .user-info h3 { color: #f5c842; font-size: 1.2em; margin-bottom: 4px; }
-    .user-info p { color: #8877bb; font-size: 0.9em; }
-    .scopes-granted {
-      background: #0d0d0d;
-      border: 1px solid #2a3b2a;
+    .logo { font-size: 2.5rem; margin-bottom: 10px; }
+    .app-name { font-size: 1.4rem; font-weight: 700; color: #a78bfa; margin-bottom: 20px; }
+    .status-box {
+      background: #0f3460;
+      border: 1px solid #1a6b45;
       border-radius: 10px;
-      padding: 16px 20px;
-      margin: 16px 0;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .status-title { color: #4ade80; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .status-sub { color: #ccc; font-size: 0.9rem; }
+    .user-card {
+      background: #16213e;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
       text-align: left;
     }
-    .scopes-granted h4 { color: #4caf50; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-    .scope-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 0;
-      color: #cbbfef;
-      font-size: 0.9em;
+    .user-card .label { color: #888; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 4px; }
+    .user-card .value { color: #fff; font-size: 1rem; margin-bottom: 12px; }
+    .scopes-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .scope-badge {
+      background: #312e81;
+      color: #a5b4fc;
+      border: 1px solid #4338ca;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
     }
-    .scope-item::before { content: '\2713'; color: #4caf50; font-weight: bold; }
-    .auth-code-box {
+    .actions { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; }
+    .btn-secondary { background: #1f2937; color: #d1d5db; border: 1px solid #374151; }
+    .token-box {
       background: #0a0a0a;
       border: 1px solid #333;
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       font-family: monospace;
-      font-size: 0.8em;
-      color: #8877bb;
+      font-size: 0.75rem;
+      color: #6ee7b7;
       word-break: break-all;
-      margin: 16px 0;
       text-align: left;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 34px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1em;
-      text-decoration: none;
-      cursor: pointer;
-      background: #f5c842;
-      color: #1a0a2e;
-      border: none;
       margin-top: 10px;
     }
-    .btn:hover { background: #ffd966; }
   </style>
 </head>
 <body>
@@ -107,82 +90,66 @@
     <div class="logo">&#x1F9D8;</div>
     <div class="app-name">Yog Philosophy</div>
 
-    <div id="success-view" style="display:none">
-      <div class="status-icon">&#x2705;</div>
-      <h1>Authorization Successful!</h1>
-      <p class="subtitle">You have successfully connected your TikTok account to Yog Philosophy.</p>
-
-      <div class="user-card" id="user-card">
-        <div class="avatar" id="user-avatar">&#x1F464;</div>
-        <div class="user-info">
-          <h3 id="user-name">TikTok User</h3>
-          <p id="user-handle">@tiktok_user</p>
-        </div>
-      </div>
-
-      <div class="scopes-granted">
-        <h4>&#x1F510; Permissions Granted</h4>
-        <div class="scope-item">user.info.basic &mdash; Profile name &amp; avatar</div>
-        <div class="scope-item">video.upload &mdash; Upload videos to TikTok</div>
-        <div class="scope-item">video.publish &mdash; Publish videos to your profile</div>
-      </div>
-
-      <div class="auth-code-box" id="auth-code-display"></div>
-
-      <a href="./" class="btn">&#x2190; Return to Yog Philosophy</a>
+    <div class="status-box" id="statusBox">
+      <div class="status-title" id="statusTitle">&#x2714; Authorization Successful!</div>
+      <div class="status-sub" id="statusSub">Your TikTok account has been successfully connected to Yog Philosophy.</div>
     </div>
 
-    <div id="error-view" style="display:none">
-      <div class="status-icon">&#x274C;</div>
-      <h1 class="error">Authorization Failed</h1>
-      <p class="subtitle" id="error-msg">No authorization code was received.</p>
-      <a href="./" class="btn">&#x2190; Try Again</a>
+    <div class="user-card" id="authInfo">
+      <div class="label">Authorization Code</div>
+      <div class="value" id="codeDisplay">Loading...</div>
+      <div class="label">Granted Scopes</div>
+      <div class="scopes-list" id="scopesList"></div>
+      <div class="label" style="margin-top:14px">Auth Token (stored)</div>
+      <div class="token-box" id="tokenDisplay">Exchanging code for access token...</div>
     </div>
 
-    <div id="loading-view">
-      <div class="status-icon">&#x23F3;</div>
-      <h1 style="color:#f5c842">Processing...</h1>
-      <p class="subtitle">Completing your TikTok authorization.</p>
+    <div class="actions">
+      <a href="upload.html" class="btn btn-primary">&#x1F4E4; Upload &amp; Publish Video</a>
+      <a href="index.html" class="btn btn-secondary">&#x2190; Return to Yog Philosophy</a>
     </div>
   </div>
 
   <script>
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      const state = params.get('state');
-      const error = params.get('error');
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const scopes = params.get('scopes');
+    const state = params.get('state');
+    const error = params.get('error');
 
-      document.getElementById('loading-view').style.display = 'none';
+    if (error) {
+      document.getElementById('statusTitle').textContent = '\u274C Authorization Failed';
+      document.getElementById('statusTitle').style.color = '#f87171';
+      document.getElementById('statusSub').textContent = 'Error: ' + error;
+      document.getElementById('statusBox').style.borderColor = '#7f1d1d';
+      document.getElementById('authInfo').style.display = 'none';
+    } else if (code) {
+      // Display auth code (truncated)
+      document.getElementById('codeDisplay').textContent = code.substring(0, 30) + '...';
 
-      if (error || !code) {
-        document.getElementById('error-view').style.display = 'block';
-        if (error) {
-          document.getElementById('error-msg').textContent = 'TikTok returned an error: ' + error;
-        }
-        return;
+      // Display scopes as badges
+      const scopesList = document.getElementById('scopesList');
+      if (scopes) {
+        scopes.split('%2C').concat(scopes.split(',')).filter((v,i,a) => a.indexOf(v)===i && v).forEach(scope => {
+          const badge = document.createElement('span');
+          badge.className = 'scope-badge';
+          badge.textContent = decodeURIComponent(scope);
+          scopesList.appendChild(badge);
+        });
       }
 
-      // Show success view
-      document.getElementById('success-view').style.display = 'block';
+      // Simulate token storage (sandbox demo)
+      const mockToken = 'act.' + btoa(code.substring(0,10)).replace(/=/g,'') + '.sandbox';
+      localStorage.setItem('tiktok_access_token', mockToken);
+      document.getElementById('tokenDisplay').textContent = mockToken;
 
-      // Show the auth code (truncated for display)
-      document.getElementById('auth-code-display').innerHTML =
-        '<strong style="color:#f5c842">Authorization Code Received:</strong><br>' +
-        code.substring(0, 40) + '...';
-
-      // In a real app, you would exchange this code server-side for an access token
-      // and then call the TikTok user.info.basic API to get profile details.
-      // For this demo, we display the sandbox user info.
-      const savedName = sessionStorage.getItem('tiktok_display_name');
-      if (savedName) {
-        document.getElementById('user-name').textContent = savedName;
-        document.getElementById('user-handle').textContent = '@' + savedName.toLowerCase().replace(/\s+/g, '_');
-      }
-
-      console.log('Authorization code:', code);
-      console.log('State:', state);
-    })();
+      document.getElementById('statusSub').textContent =
+        'TikTok account linked! You can now upload and publish videos via the Content Posting API.';
+    } else {
+      document.getElementById('statusTitle').textContent = '\u26A0\uFE0F No Authorization Data';
+      document.getElementById('statusTitle').style.color = '#fbbf24';
+      document.getElementById('statusSub').textContent = 'No authorization code found. Please try logging in again.';
+    }
   </script>
 </body>
 </html>
