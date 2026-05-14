@@ -1,44 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Background circle -->
-  <circle cx="100" cy="100" r="100" fill="#1a0a4e"/>
-  
-  <!-- Lotus petals (bottom) -->
-  <ellipse cx="100" cy="145" rx="45" ry="18" fill="#f5c842" opacity="0.9" transform="rotate(-30 100 145)"/>
-  <ellipse cx="100" cy="145" rx="45" ry="18" fill="#f5c842" opacity="0.9" transform="rotate(30 100 145)"/>
-  <ellipse cx="100" cy="148" rx="30" ry="15" fill="#f5c842"/>
-  
-  <!-- Meditating figure body -->
-  <!-- Crossed legs -->
-  <ellipse cx="100" cy="148" rx="38" ry="14" fill="#f5a800" opacity="0.8"/>
-  
-  <!-- Torso -->
-  <rect x="86" y="108" width="28" height="42" rx="8" fill="#f5a800"/>
-  
-  <!-- Head -->
-  <circle cx="100" cy="95" r="18" fill="#f5c842"/>
-  
-  <!-- Face features -->
-  <!-- Eyes closed (meditation) -->
-  <path d="M93 93 Q96 91 99 93" stroke="#1a0a4e" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M101 93 Q104 91 107 93" stroke="#1a0a4e" stroke-width="2" fill="none" stroke-linecap="round"/>
-  
-  <!-- Peaceful smile -->
-  <path d="M94 99 Q100 104 106 99" stroke="#1a0a4e" stroke-width="2" fill="none" stroke-linecap="round"/>
-  
-  <!-- Aura / halo -->
-  <circle cx="100" cy="95" r="26" fill="none" stroke="#f5c842" stroke-width="2" opacity="0.5"/>
-  <circle cx="100" cy="95" r="32" fill="none" stroke="#f5c842" stroke-width="1" opacity="0.3"/>
-  
-  <!-- Arms in mudra position -->
-  <ellipse cx="75" cy="135" rx="14" ry="8" fill="#f5a800" transform="rotate(-15 75 135)"/>
-  <ellipse cx="125" cy="135" rx="14" ry="8" fill="#f5a800" transform="rotate(15 125 135)"/>
-  
-  <!-- Hands joined (namaste hint) -->
-  <circle cx="100" cy="130" r="7" fill="#f5c842" opacity="0.8"/>
-  
-  <!-- Om symbol top -->
-  <text x="100" y="68" font-size="18" text-anchor="middle" fill="#f5c842" font-family="serif" opacity="0.9">&#x0950;</text>
-  
-  <!-- Golden border ring -->
-  <circle cx="100" cy="100" r="97" fill="none" stroke="#f5c842" stroke-width="3" opacity="0.6"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <clipPath id="circle-clip">
+      <circle cx="100" cy="100" r="97"/>
+    </clipPath>
+  </defs>
+  <!-- Actual logo image clipped to circle -->
+  <image href="logo.png" x="0" y="0" width="200" height="200" clip-path="url(#circle-clip)" preserveAspectRatio="xMidYMid slice"/>
+  <!-- Gold border ring -->
+  <circle cx="100" cy="100" r="97" fill="none" stroke="#f5c842" stroke-width="4"/>
 </svg>
