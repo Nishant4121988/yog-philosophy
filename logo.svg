@@ -5,7 +5,7 @@
     </clipPath>
   </defs>
   <!-- Actual logo image clipped to circle -->
-  <image href="logo.png" x="0" y="0" width="200" height="200" clip-path="url(#circle-clip)" preserveAspectRatio="xMidYMid slice"/>
+  <image href="Yog%20(2).png" x="0" y="0" width="200" height="200" clip-path="url(#circle-clip)" preserveAspectRatio="xMidYMid slice"/>
   <!-- Gold border ring -->
   <circle cx="100" cy="100" r="97" fill="none" stroke="#f5c842" stroke-width="4"/>
 </svg>
